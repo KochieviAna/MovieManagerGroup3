@@ -11,9 +11,9 @@ final class DetailsPageVC: UIViewController {
     
     // MARK: - Properties
     
-    private let backButton = UIButton()
-    private let configuration = UIImage.SymbolConfiguration(pointSize: 28)
-    private var isBookmarked = false
+    private lazy var backButton = UIButton()
+    private lazy var configuration = UIImage.SymbolConfiguration(pointSize: 28)
+    private lazy var isBookmarked = false
     
     let movieImageView: UIImageView = {
         let imageView = UIImageView()
@@ -24,7 +24,7 @@ final class DetailsPageVC: UIViewController {
         return imageView
     }()
     
-    let roundedView: UIView = {
+    let containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
@@ -38,7 +38,8 @@ final class DetailsPageVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         label.numberOfLines = 0
-        label.textColor = .black
+        label.textColor = UIColor(hexString: "000000")
+        label.textAlignment = .left
         return label
     }()
     
@@ -68,55 +69,61 @@ final class DetailsPageVC: UIViewController {
     }()
     
     private let lengthTitleLabel: UILabel = {
-            let label = UILabel()
-            label.translatesAutoresizingMaskIntoConstraints = false
-            label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-            label.textColor = .lightGray
-            label.text = "Length"
-            return label
-       }()
-       
-       private let languageTitleLabel: UILabel = {
-           let label = UILabel()
-           label.translatesAutoresizingMaskIntoConstraints = false
-           label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-           label.textColor = .lightGray
-           label.text = "Language"
-           return label
-       }()
-       
-       private let ratingTitleLabel: UILabel = {
-           let label = UILabel()
-           label.translatesAutoresizingMaskIntoConstraints = false
-           label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-           label.textColor = .lightGray
-           label.text = "Rating"
-           return label
-       }()
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.textColor = UIColor(hexString: "9C9C9C")
+        label.text = "Length"
+        label.textAlignment = .left
+        return label
+    }()
+    
+    private let languageTitleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.textColor = .lightGray
+        label.text = "Language"
+        label.textAlignment = .left
+        return label
+    }()
+    
+    private let ratingTitleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.textColor = .lightGray
+        label.text = "Rating"
+        label.textAlignment = .left
+        return label
+    }()
     
     private let lengthValueLabel: UILabel = {
-           let label = UILabel()
-           label.translatesAutoresizingMaskIntoConstraints = false
-           label.font = UIFont.systemFont(ofSize: 14)
-           label.textColor = .black
-           return label
-       }()
-       
-       private let languageValueLabel: UILabel = {
-           let label = UILabel()
-           label.translatesAutoresizingMaskIntoConstraints = false
-           label.font = UIFont.systemFont(ofSize: 14)
-           label.textColor = .black
-           return label
-       }()
-       
-       private let ratingValueLabel: UILabel = {
-           let label = UILabel()
-           label.translatesAutoresizingMaskIntoConstraints = false
-           label.font = UIFont.systemFont(ofSize: 14)
-           label.textColor = .black
-           return label
-       }()
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
+    }()
+    
+    private let languageValueLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
+    }()
+    
+    private let ratingValueLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
+    }()
     
     // MARK: - Lifecycle
     
@@ -159,31 +166,31 @@ final class DetailsPageVC: UIViewController {
     }
     
     private func setupRoundedView() {
-        view.addSubview(roundedView)
+        view.addSubview(containerView)
         
         NSLayoutConstraint.activate([
-            roundedView.topAnchor.constraint(equalTo: movieImageView.bottomAnchor, constant: -60),
-            roundedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            roundedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            roundedView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            containerView.topAnchor.constraint(equalTo: movieImageView.bottomAnchor, constant: -60),
+            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
     
     private func setupTitleLabel() {
-        roundedView.addSubview(titleLabel)
+        containerView.addSubview(titleLabel)
         
         titleLabel.text = "Spiderman: No Way Home"
 
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: roundedView.topAnchor, constant: 24),
-            titleLabel.leadingAnchor.constraint(equalTo: roundedView.leadingAnchor, constant: 24),
+            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 24),
+            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 24),
             titleLabel.widthAnchor.constraint(equalToConstant: 240),
             titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 50)
         ])
     }
     
     private func setupSmallButton() {
-        roundedView.addSubview(bookmarkButton)
+        containerView.addSubview(bookmarkButton)
         
         bookmarkButton.setImage(UIImage(systemName: "bookmark", withConfiguration: configuration), for: .normal)
         bookmarkButton.tintColor = .black
@@ -192,7 +199,7 @@ final class DetailsPageVC: UIViewController {
         
         NSLayoutConstraint.activate([
             bookmarkButton.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 4),
-            bookmarkButton.trailingAnchor.constraint(equalTo: roundedView.trailingAnchor, constant: -24),
+            bookmarkButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -24),
             bookmarkButton.widthAnchor.constraint(equalToConstant: 24),
             bookmarkButton.heightAnchor.constraint(equalToConstant: 24)
         ])
@@ -209,7 +216,7 @@ final class DetailsPageVC: UIViewController {
     }
     
     private func setupIMDbLabel() {
-        roundedView.addSubview(imdbLabel)
+        containerView.addSubview(imdbLabel)
         
             let starImage = UIImage(systemName: "star.fill")
             let attachment = NSTextAttachment(image: starImage!.withRenderingMode(.alwaysOriginal))
@@ -229,13 +236,13 @@ final class DetailsPageVC: UIViewController {
         
         NSLayoutConstraint.activate([
             imdbLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
-            imdbLabel.leadingAnchor.constraint(equalTo: roundedView.leadingAnchor, constant: 24),
+            imdbLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 24),
             imdbLabel.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
     
     private func setupGenresCollectionView() {
-        roundedView.addSubview(genresCollectionView)
+        containerView.addSubview(genresCollectionView)
 
         genresCollectionView.register(DetailsPageGenreCell.self, forCellWithReuseIdentifier: DetailsPageGenreCell.reuseIdentifier)
         
@@ -244,8 +251,8 @@ final class DetailsPageVC: UIViewController {
 
         NSLayoutConstraint.activate([
             genresCollectionView.topAnchor.constraint(equalTo: imdbLabel.bottomAnchor, constant: 16),
-            genresCollectionView.leadingAnchor.constraint(equalTo: roundedView.leadingAnchor, constant: 24),
-            genresCollectionView.trailingAnchor.constraint(equalTo: roundedView.trailingAnchor, constant: -24),
+            genresCollectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 24),
+            genresCollectionView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -24),
             genresCollectionView.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
@@ -279,11 +286,11 @@ final class DetailsPageVC: UIViewController {
         parametersStackView.addArrangedSubview(titlesStackView)
         parametersStackView.addArrangedSubview(valuesStackView)
 
-        roundedView.addSubview(parametersStackView)
+        containerView.addSubview(parametersStackView)
 
         NSLayoutConstraint.activate([
             parametersStackView.topAnchor.constraint(equalTo: genresCollectionView.bottomAnchor, constant: 16),
-            parametersStackView.leadingAnchor.constraint(equalTo: roundedView.leadingAnchor, constant: 24),
+            parametersStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 24),
             parametersStackView.widthAnchor.constraint(equalToConstant: 327),
             parametersStackView.heightAnchor.constraint(equalToConstant: 40),
         ])
@@ -315,7 +322,9 @@ extension DetailsPageVC: UICollectionViewDataSource, UICollectionViewDelegateFlo
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailsPageGenreCell.reuseIdentifier, for: indexPath) as! DetailsPageGenreCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailsPageGenreCell.reuseIdentifier, for: indexPath) as? DetailsPageGenreCell else {
+            return UICollectionViewCell()
+        }
         cell.configure(with: genres[indexPath.item])
         return cell
     }
