@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol HorisontalCellDelegate: AnyObject {
+    func horisontalCellDidSelectItem(at indexPath: IndexPath)
+}
+
 final class HorisontalCell: UITableViewCell {
+    
+    weak var delegate: HorisontalCellDelegate?
     
     private lazy var filmCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -69,10 +75,11 @@ extension HorisontalCell: UICollectionViewDataSource, UICollectionViewDelegate {
         return cell
     }
     
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        <#code#>
-//    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.horisontalCellDidSelectItem(at: indexPath)
+    }
 }
+
 
 extension HorisontalCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

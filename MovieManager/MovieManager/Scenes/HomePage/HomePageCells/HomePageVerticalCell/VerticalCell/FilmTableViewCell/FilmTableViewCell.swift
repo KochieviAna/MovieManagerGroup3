@@ -171,7 +171,6 @@ class FilmTableViewCell: UITableViewCell {
         categoryCollectionView.delegate = self
         categoryCollectionView.reloadData()
     }
-
 }
 
 // MARK: - Extensions
@@ -191,10 +190,6 @@ extension FilmTableViewCell: UITableViewDataSource, UITableViewDelegate {
         cell.configure(with: currentFilm)
         return cell
     }
-    
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        <#code#>
-//    }
 }
 
 

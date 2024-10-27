@@ -64,14 +64,12 @@ extension HomePageVC: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "HorisontalCell", for: indexPath) as? HorisontalCell else {
-                return UITableViewCell()
-            }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "HorisontalCell", for: indexPath) as? HorisontalCell else { return UITableViewCell() }
+            cell.delegate = self
             return cell
         } else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: FilmTableViewCell.identifier, for: indexPath) as? FilmTableViewCell else {
-                return UITableViewCell()
-            }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: FilmTableViewCell.identifier, for: indexPath) as? FilmTableViewCell else { return UITableViewCell() }
+            
             let movie = homePageViewModel.getPopularMovies()[indexPath.row]
             cell.configure(with: movie)
 
@@ -79,8 +77,28 @@ extension HomePageVC: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let currentIndex = indexPath.row
+        
+        if indexPath.section == 0 {
+            return
+        } else if indexPath.section == 1 {
+            let vc = DetailsPageVC()
+            
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return indexPath.section == 0 ? 350 : 140
     }
 }
+
+extension HomePageVC: HorisontalCellDelegate {
+    func horisontalCellDidSelectItem(at indexPath: IndexPath) {
+        let detailViewController = DetailsPageVC()
+        navigationController?.pushViewController(detailViewController, animated: true)
+    }
+}
+
 
