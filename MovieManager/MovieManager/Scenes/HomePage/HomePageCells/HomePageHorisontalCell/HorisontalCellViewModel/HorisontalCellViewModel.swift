@@ -7,6 +7,4 @@
 
 import Foundation
 
-final class HorisontalCellViewModel {
-    
-}
+final class HorisontalCellViewModel {}

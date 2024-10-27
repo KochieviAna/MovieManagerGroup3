@@ -22,7 +22,7 @@ final class HorisontalCell: UITableViewCell {
         return collectionView
     }()
     
-    private let horisontalCellViewModel = HorisontalCellViewModel()
+    private let homePageViewModel = HomePageViewModel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -53,22 +53,25 @@ final class HorisontalCell: UITableViewCell {
     }
 }
 
-extension HorisontalCell: UICollectionViewDataSource {
+extension HorisontalCell: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        <#code#>
+        homePageViewModel.getNowShowingMovies().count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FilmCollectionViewCell", for: indexPath) as? FilmCollectionViewCell else {
             return UICollectionViewCell()
         }
+        let currentFilm = homePageViewModel.getNowShowingMovies()[indexPath.row]
+        
+        cell.configureHorisontalCell(film: currentFilm)
+        
+        return cell
     }
-}
-
-extension HorisontalCell: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        <#code#>
-    }
+    
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        <#code#>
+//    }
 }
 
 extension HorisontalCell: UICollectionViewDelegateFlowLayout {

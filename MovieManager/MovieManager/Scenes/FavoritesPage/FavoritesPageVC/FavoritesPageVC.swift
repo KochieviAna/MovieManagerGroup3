@@ -44,7 +44,8 @@ final class FavoritesPageVC: UIViewController {
 
 extension FavoritesPageVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.numberOfFilms
+//        viewModel.numberOfFilms
+        1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -52,7 +53,7 @@ extension FavoritesPageVC: UICollectionViewDelegate, UICollectionViewDataSource 
             fatalError("Failed to dequeue CustomCollectionViewCell")
         }
 
-        cell.configure(movie: viewModel.getFilm(at:indexPath.row))
+//        cell.configure(movie: viewModel.getFilm(at:indexPath.row))
                        
         return cell
             

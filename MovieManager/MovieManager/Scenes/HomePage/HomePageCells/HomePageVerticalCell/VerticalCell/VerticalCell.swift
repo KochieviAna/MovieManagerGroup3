@@ -20,7 +20,7 @@ class VerticalCell: UITableViewCell {
         return tableView
     }()
     
-    private let verticalCellViewModel = VerticalCellViewModel()
+    private let homePageViewModel = HomePageViewModel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -48,34 +48,45 @@ class VerticalCell: UITableViewCell {
 }
 // MARK: - Extensions
 
-extension VerticalCell: UITableViewDataSource {
+extension VerticalCell: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return homePageViewModel.getPopularMovies().count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: FilmTableViewCell.identifier, for: indexPath) as? FilmTableViewCell else {
             return UITableViewCell()
         }
-        cell.configure(withDataSource: self, delegate: self)
+        let currentFilm = homePageViewModel.getPopularMovies()[indexPath.row]
+        
+        cell.configure(withDataSource: self, delegate: self, film: currentFilm)
         return cell
     }
+    
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        <#code#>
+//    }
 }
 
-extension VerticalCell: UITableViewDelegate { }
 
 // MARK: - Collection View Delegate and Data Source
 
 extension VerticalCell: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return 3
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionCell.identifier, for: indexPath) as! CategoryCollectionCell
-
+        
+        let currentFilm = homePageViewModel.getPopularMovies()[indexPath.row]
+        
+        currentFilm.genre.forEach {
+            cell.setCategory(with: $0.description)
+        }
+        
         return cell
     }
 

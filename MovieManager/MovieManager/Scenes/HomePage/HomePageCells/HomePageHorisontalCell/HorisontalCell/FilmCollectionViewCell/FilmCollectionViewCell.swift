@@ -14,6 +14,8 @@ final class FilmCollectionViewCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 10
+        imageView.layer.masksToBounds = true
         return imageView
     }()
     
@@ -52,7 +54,7 @@ final class FilmCollectionViewCell: UICollectionViewCell {
         stackView.spacing = 4
         return stackView
     }()
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUpUI()
@@ -92,7 +94,9 @@ final class FilmCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    public func configureHorisontalCell() {
-        
+    public func configureHorisontalCell(film: FilmModel) {
+        filmImageView.image = film.image
+        filmNameLabel.text = film.name
+        filmRateLabel.text = "\(film.imdbRating)"
     }
 }

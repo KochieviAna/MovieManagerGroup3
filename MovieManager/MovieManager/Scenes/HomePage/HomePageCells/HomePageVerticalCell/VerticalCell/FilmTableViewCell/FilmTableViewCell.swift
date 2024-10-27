@@ -20,6 +20,8 @@ class FilmTableViewCell: UITableViewCell {
         imageView.clipsToBounds = true
         imageView.widthAnchor.constraint(equalToConstant: 85).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        imageView.layer.cornerRadius = 10
+        imageView.layer.masksToBounds = true
         
         return imageView
     }()
@@ -157,9 +159,13 @@ class FilmTableViewCell: UITableViewCell {
         ])
     }
     
-    func configure(withDataSource dataSource: UICollectionViewDataSource, delegate: UICollectionViewDelegate) {
+    func configure(withDataSource dataSource: UICollectionViewDataSource, delegate: UICollectionViewDelegate, film: FilmModel) {
         categoryCollectionView.dataSource = dataSource
         categoryCollectionView.delegate = delegate
+        filmImageView.image = film.image
+        nameLabel.text = film.name
+        rateLabel.text = "\(film.imdbRating)"
+        filmDuration.text = film.length
     }
 }
 
