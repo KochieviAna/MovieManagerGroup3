@@ -24,6 +24,8 @@ final class HomePageVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+
+
         setupUI()
     }
     
@@ -75,3 +77,4 @@ extension HomePageVC: UITableViewDataSource, UITableViewDelegate {
         350
     }
 }
+
