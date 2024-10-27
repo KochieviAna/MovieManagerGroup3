@@ -125,6 +125,27 @@ final class DetailsPageVC: UIViewController {
         return label
     }()
     
+    //description
+    private let descriptionTitle: UILabel = {
+        let label = UILabel()
+        label.text = "Description"
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.textColor = .black
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.backgroundColor = .purple
+        label.textColor = .black
+        label.numberOfLines = 0
+        label.textAlignment = .left
+        return label
+    }()
+    
     
     //ჩამატება ლეთების
     private let actorsCollectionView: UICollectionView = {
@@ -155,6 +176,7 @@ final class DetailsPageVC: UIViewController {
         setupIMDbLabel()
         setupGenresCollectionView()
         setupParameters()
+        setupDescription()
         setupActorsCollectionView()
     }
     
@@ -330,6 +352,25 @@ final class DetailsPageVC: UIViewController {
         ratingValueLabel.widthAnchor.constraint(equalToConstant: valueWidth).isActive = true
     }
     
+    //description setup
+    private func setupDescription() {
+        containerView.addSubview(descriptionTitle)
+        containerView.addSubview(descriptionLabel)
+        
+        descriptionLabel.text = "A thrilling story about Spider-Man facing new challenges and discovering unexpected alliances."
+
+        
+        NSLayoutConstraint.activate([
+            descriptionLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -150),
+            descriptionLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 24),
+            descriptionLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -24),
+            descriptionLabel.heightAnchor.constraint(equalToConstant: 150),
+
+            descriptionTitle.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor, constant: -12),
+            descriptionTitle.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 24),
+            descriptionTitle.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -24),
+        ])
+    }
     
     // ეს არის სეტაპი
     private func setupActorsCollectionView() {
