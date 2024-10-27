@@ -121,6 +121,8 @@ class FilmTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private let homePageViewModel = HomePageViewModel()
+    
     // MARK: - Functions
     
     private func setup() {
@@ -159,13 +161,65 @@ class FilmTableViewCell: UITableViewCell {
         ])
     }
     
-    func configure(withDataSource dataSource: UICollectionViewDataSource, delegate: UICollectionViewDelegate, film: FilmModel) {
-        categoryCollectionView.dataSource = dataSource
-        categoryCollectionView.delegate = delegate
+    func configure(with film: FilmModel) {
         filmImageView.image = film.image
         nameLabel.text = film.name
         rateLabel.text = "\(film.imdbRating)"
         filmDuration.text = film.length
+        
+        categoryCollectionView.dataSource = self
+        categoryCollectionView.delegate = self
+        categoryCollectionView.reloadData()
+    }
+
+}
+
+// MARK: - Extensions
+
+extension FilmTableViewCell: UITableViewDataSource, UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return homePageViewModel.getPopularMovies().count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: FilmTableViewCell.identifier, for: indexPath) as? FilmTableViewCell else {
+            return UITableViewCell()
+        }
+        let currentFilm = homePageViewModel.getPopularMovies()[indexPath.row]
+        
+        cell.configure(with: currentFilm)
+        return cell
+    }
+    
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        <#code#>
+//    }
+}
+
+
+// MARK: - Collection View Delegate and Data Source
+
+extension FilmTableViewCell: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 3
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionCell.identifier, for: indexPath) as! CategoryCollectionCell
+        
+        let currentFilm = homePageViewModel.getPopularMovies()[indexPath.row]
+        
+        currentFilm.genre.forEach {
+            cell.setCategory(with: $0.description)
+        }
+        
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 65, height: 25)
     }
 }
 
