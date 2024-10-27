@@ -125,6 +125,23 @@ final class DetailsPageVC: UIViewController {
         return label
     }()
     
+    
+    //ჩამატება ლეთების
+    private let actorsCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 16
+        layout.minimumInteritemSpacing = 8
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .clear
+        return collectionView
+    }()
+    
+    // ეს მაგალითები
+    private let actors = [("Tom Holland", "actorImage1"), ("Zendaya", "actorImage2"), ("Benedict Cumberbatch", "actorImage3"), ("Tom Holland", "actorImage1"), ("Tom Holland", "actorImage1")]
+
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -138,6 +155,7 @@ final class DetailsPageVC: UIViewController {
         setupIMDbLabel()
         setupGenresCollectionView()
         setupParameters()
+        setupActorsCollectionView()
     }
     
     // MARK: - Setup Methods
@@ -311,6 +329,23 @@ final class DetailsPageVC: UIViewController {
         languageValueLabel.widthAnchor.constraint(equalToConstant: valueWidth).isActive = true
         ratingValueLabel.widthAnchor.constraint(equalToConstant: valueWidth).isActive = true
     }
+    
+    
+    // ეს არის სეტაპი
+    private func setupActorsCollectionView() {
+        containerView.addSubview(actorsCollectionView)
+        actorsCollectionView.register(ActorCell.self, forCellWithReuseIdentifier: ActorCell.reuseIdentifier)
+        
+        actorsCollectionView.dataSource = self
+        actorsCollectionView.delegate = self
+
+        NSLayoutConstraint.activate([
+            actorsCollectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 24),
+            actorsCollectionView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -24),
+            actorsCollectionView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -30),
+            actorsCollectionView.heightAnchor.constraint(equalToConstant: 100)
+        ])
+    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -318,28 +353,38 @@ final class DetailsPageVC: UIViewController {
 extension DetailsPageVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return genres.count
+        return collectionView == genresCollectionView ? genres.count : actors.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailsPageGenreCell.reuseIdentifier, for: indexPath) as? DetailsPageGenreCell else {
-            return UICollectionViewCell()
+        if collectionView == genresCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailsPageGenreCell.reuseIdentifier, for: indexPath) as? DetailsPageGenreCell else {
+                return UICollectionViewCell()
+            }
+            cell.configure(with: genres[indexPath.item])
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ActorCell.reuseIdentifier, for: indexPath) as? ActorCell else {
+                return UICollectionViewCell()
+            }
+            cell.configure(with: actors[indexPath.item])
+            return cell
         }
-        cell.configure(with: genres[indexPath.item])
-        return cell
     }
 
     // MARK: - UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let genre = genres[indexPath.item]
-        
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.text = genre
-        
-        let size = label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: 18))
-        return CGSize(width: size.width + 20, height: 30)
+        if collectionView == genresCollectionView {
+            let genre = genres[indexPath.item]
+            let label = UILabel()
+            label.font = UIFont.systemFont(ofSize: 16)
+            label.text = genre
+            let size = label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: 18))
+            return CGSize(width: size.width + 20, height: 30)
+        } else {
+            return CGSize(width: 90, height: 90)
+        }
     }
 }
 
