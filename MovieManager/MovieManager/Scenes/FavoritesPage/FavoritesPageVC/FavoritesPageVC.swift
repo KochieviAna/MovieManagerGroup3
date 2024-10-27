@@ -13,13 +13,14 @@ final class FavoritesPageVC: UIViewController {
         let collection: UICollectionView
         let collectionLayout = UICollectionViewFlowLayout()
         collectionLayout.scrollDirection = .vertical
-        collectionLayout.itemSize = CGSize(width: 180, height: 450)
+        collectionLayout.itemSize = CGSize(width: 180, height: 270)
         collection = UICollectionView(frame: .zero, collectionViewLayout: collectionLayout)
         collection.translatesAutoresizingMaskIntoConstraints = false
         
         return collection
     }()
-    let viewModel = FavoritesPageViewModel()
+    
+    let homePageViewModel = HomePageViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,16 +45,16 @@ final class FavoritesPageVC: UIViewController {
 
 extension FavoritesPageVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        viewModel.numberOfFilms
-        1
+        homePageViewModel.getFavoriteMovies().count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoritesPageCell.identifier, for: indexPath) as? FavoritesPageCell else {
             fatalError("Failed to dequeue CustomCollectionViewCell")
         }
+        let currentFilm = homePageViewModel.getFavoriteMovies()[indexPath.row]
 
-//        cell.configure(movie: viewModel.getFilm(at:indexPath.row))
+        cell.configure(with: currentFilm)
                        
         return cell
             

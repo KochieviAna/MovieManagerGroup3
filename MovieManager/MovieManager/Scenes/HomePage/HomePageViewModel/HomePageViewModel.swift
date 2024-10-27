@@ -149,6 +149,13 @@ final class HomePageViewModel {
         return Array(movies.suffix(5))
     }
     
+    func getFavoriteMovies() -> [FilmModel] {
+        movies[0].isFavorite = true
+        movies[2].isFavorite = true
+        movies[4].isFavorite = true
+        return movies.filter { $0.isFavorite == true }
+    }
+    
     var numberOfFilmModels: Int {
         movies.count
     }

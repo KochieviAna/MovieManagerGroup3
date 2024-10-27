@@ -11,15 +11,22 @@ final class FavoritesPageCell: UICollectionViewCell {
     
     static let identifier = "FavoritesPageCell"
     
+    private let avatarContainer: UIView = {
+        let container = UIView()
+        container.layer.shadowColor = UIColor.black.cgColor
+        container.layer.shadowOpacity = 0.5
+        container.layer.shadowOffset = CGSize(width: 0, height: 5)
+        container.layer.shadowRadius = 5.0
+        container.layer.cornerRadius = 10
+        container.backgroundColor = .clear
+        
+        return container
+    }()
+    
     private let avatar: UIImageView = {
         let imageOfFilm = UIImageView()
         imageOfFilm.layer.cornerRadius = 10
         imageOfFilm.layer.masksToBounds = true
-        imageOfFilm.layer.shadowColor = UIColor.black.cgColor
-        imageOfFilm.layer.shadowOpacity = 1.0
-        imageOfFilm.layer.shadowOffset = .zero
-        imageOfFilm.layer.shadowPath = UIBezierPath(roundedRect: imageOfFilm.bounds, cornerRadius: imageOfFilm.layer.cornerRadius).cgPath
-        imageOfFilm.layer.shadowRadius = 15
         
         return imageOfFilm
     }()
@@ -29,6 +36,7 @@ final class FavoritesPageCell: UICollectionViewCell {
         label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
         label.textColor = .black
         label.numberOfLines = 2
+        
         return label
     }()
     
@@ -36,6 +44,7 @@ final class FavoritesPageCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .light)
         label.textColor = .systemGray
+        
         return label
     }()
     
@@ -43,6 +52,7 @@ final class FavoritesPageCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "star.fill")
         imageView.tintColor = .systemYellow
+        
         return imageView
     }()
     
@@ -55,35 +65,44 @@ final class FavoritesPageCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     private func setupCell() {
-        [avatar, nameLabel, ratingDescriptionLabel, favoriteImageStar].forEach {
+        avatar.translatesAutoresizingMaskIntoConstraints = false
+        avatarContainer.translatesAutoresizingMaskIntoConstraints = false
+        avatarContainer.addSubview(avatar)
+        
+        [avatarContainer, nameLabel, ratingDescriptionLabel, favoriteImageStar].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
-     NSLayoutConstraint.activate([
-        avatar.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-        avatar.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-        avatar.heightAnchor.constraint(lessThanOrEqualToConstant: 200),
-        avatar.widthAnchor.constraint(lessThanOrEqualToConstant: 150),
         
-        nameLabel.topAnchor.constraint(equalTo: avatar.bottomAnchor, constant: -500),
-        nameLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 20),
-        nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 20),
-        nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-        
-        ratingDescriptionLabel.leftAnchor.constraint(equalTo: favoriteImageStar.leftAnchor, constant: 30),
-        ratingDescriptionLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: -30),
-        
-        favoriteImageStar.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 20),
-        favoriteImageStar.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: -30)
-     ])
+        NSLayoutConstraint.activate([
+            avatarContainer.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            avatarContainer.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            avatarContainer.heightAnchor.constraint(equalToConstant: 200),
+            avatarContainer.widthAnchor.constraint(equalToConstant: 150),
+            
+            avatar.topAnchor.constraint(equalTo: avatarContainer.topAnchor),
+            avatar.leadingAnchor.constraint(equalTo: avatarContainer.leadingAnchor),
+            avatar.trailingAnchor.constraint(equalTo: avatarContainer.trailingAnchor),
+            avatar.bottomAnchor.constraint(equalTo: avatarContainer.bottomAnchor),
+            
+            nameLabel.topAnchor.constraint(equalTo: avatarContainer.bottomAnchor, constant: 12),
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            
+            favoriteImageStar.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            favoriteImageStar.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+            favoriteImageStar.widthAnchor.constraint(equalToConstant: 20),
+            favoriteImageStar.heightAnchor.constraint(equalToConstant: 20),
+            
+            ratingDescriptionLabel.leadingAnchor.constraint(equalTo: favoriteImageStar.trailingAnchor, constant: 8),
+            ratingDescriptionLabel.centerYAnchor.constraint(equalTo: favoriteImageStar.centerYAnchor)
+        ])
     }
     
-    func configure(movie: FilmModel) {
-        avatar.image = movie.image
-        nameLabel.text = movie.name
-        ratingDescriptionLabel.text = "\(movie.imdbRating)/10 IMDb"
+    func configure(with film: FilmModel) {
+        avatar.image = film.image
+        nameLabel.text = film.name
+        ratingDescriptionLabel.text = "\(film.imdbRating)/10 IMDb"
     }
-    
 }

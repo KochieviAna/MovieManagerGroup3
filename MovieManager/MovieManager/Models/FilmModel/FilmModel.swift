@@ -24,7 +24,7 @@ struct FilmModel {
     let name: String
     let description: String
     let genre: [Genre]
-    let isFavorite: Bool = false
+    var isFavorite: Bool = false
     let imdbRating: Double
     let length: String
     let language: String
