@@ -17,16 +17,22 @@ The app has user-friendly interface and easy navigation. App is completely built
 Getting Started:
 
 •	Dependencies:
-  o	MacOS 14.5 +
-  o	 Xcode 16.0
-  o	iOS 17.5 +
+
+  •	MacOS 14.5 +
+  
+  •	 Xcode 16.0
+  
+  •	iOS 17.5 +
 
 •	Installing:
-  o	You can find our project on: https://github.com/KochieviAna/MovieManagerGroup3
+
+  •	You can find our project on: https://github.com/KochieviAna/MovieManagerGroup3
 
 •	Executing:
-  o	Clone project using git clone
-  o	Run project in Xcode
+
+  •	Clone project using git clone
+  
+  •	Run project in Xcode
 
 Authors:
 
