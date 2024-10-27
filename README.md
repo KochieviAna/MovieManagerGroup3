@@ -9,7 +9,9 @@ Movie Manager is a mobile application that displays new and popular movies. User
 Features:
 
 •	Home page: Home page has sections for Now showing and Popular movies.
+
 •	Movie details page: Details page gives user detailed information about selected movie, that includes rating, duration, language, description, cast, etc.
+
 •	Favorites page: Favorites page allows users to access movies they marked as favorites.
 
 The app has user-friendly interface and easy navigation. App is completely built on Swift programming language. In the future we hope to use API services to make app’s data more dynamic.
