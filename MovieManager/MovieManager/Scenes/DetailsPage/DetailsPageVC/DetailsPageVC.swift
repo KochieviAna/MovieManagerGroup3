@@ -161,7 +161,7 @@ final class DetailsPageVC: UIViewController {
     
     // ეს მაგალითები
     private let actors = [("Tom Holland", "actorImage1"), ("Zendaya", "actorImage2"), ("Benedict Cumberbatch", "actorImage3"), ("Tom Holland", "actorImage1"), ("Tom Holland", "actorImage1")]
-
+    
     
     // MARK: - Lifecycle
     
@@ -220,7 +220,7 @@ final class DetailsPageVC: UIViewController {
         containerView.addSubview(titleLabel)
         
         titleLabel.text = "Spiderman: No Way Home"
-
+        
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 24),
             titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 24),
@@ -247,7 +247,7 @@ final class DetailsPageVC: UIViewController {
     
     private func toggleBookmark() {
         isBookmarked.toggle()
-
+        
         if isBookmarked {
             bookmarkButton.setImage(UIImage(systemName: "bookmark.fill", withConfiguration: configuration), for: .normal)
         } else {
@@ -258,21 +258,21 @@ final class DetailsPageVC: UIViewController {
     private func setupIMDbLabel() {
         containerView.addSubview(imdbLabel)
         
-            let starImage = UIImage(systemName: "star.fill")
-            let attachment = NSTextAttachment(image: starImage!.withRenderingMode(.alwaysOriginal))
-            let attachmentString = NSAttributedString(attachment: attachment)
-
-            let ratingText = " 9.1/10 IMDb"
-            let ratingAttributedString = NSAttributedString(string: ratingText, attributes: [
-                .font: UIFont.systemFont(ofSize: 15),
-                .foregroundColor: UIColor.gray
-            ])
-
-            let combinedAttributedString = NSMutableAttributedString()
-            combinedAttributedString.append(attachmentString)
-            combinedAttributedString.append(ratingAttributedString)
-
-            imdbLabel.attributedText = combinedAttributedString
+        let starImage = UIImage(systemName: "star.fill")
+        let attachment = NSTextAttachment(image: starImage!.withRenderingMode(.alwaysOriginal))
+        let attachmentString = NSAttributedString(attachment: attachment)
+        
+        let ratingText = " 9.1/10 IMDb"
+        let ratingAttributedString = NSAttributedString(string: ratingText, attributes: [
+            .font: UIFont.systemFont(ofSize: 15),
+            .foregroundColor: UIColor.gray
+        ])
+        
+        let combinedAttributedString = NSMutableAttributedString()
+        combinedAttributedString.append(attachmentString)
+        combinedAttributedString.append(ratingAttributedString)
+        
+        imdbLabel.attributedText = combinedAttributedString
         
         NSLayoutConstraint.activate([
             imdbLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
@@ -283,12 +283,12 @@ final class DetailsPageVC: UIViewController {
     
     private func setupGenresCollectionView() {
         containerView.addSubview(genresCollectionView)
-
+        
         genresCollectionView.register(DetailsPageGenreCell.self, forCellWithReuseIdentifier: DetailsPageGenreCell.reuseIdentifier)
         
         genresCollectionView.dataSource = self
         genresCollectionView.delegate = self
-
+        
         NSLayoutConstraint.activate([
             genresCollectionView.topAnchor.constraint(equalTo: imdbLabel.bottomAnchor, constant: 16),
             genresCollectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 24),
@@ -302,51 +302,51 @@ final class DetailsPageVC: UIViewController {
         parametersStackView.translatesAutoresizingMaskIntoConstraints = false
         parametersStackView.axis = .vertical
         parametersStackView.spacing = 4
-
+        
         let titlesStackView = UIStackView()
         titlesStackView.translatesAutoresizingMaskIntoConstraints = false
         titlesStackView.axis = .horizontal
         titlesStackView.spacing = 32
         titlesStackView.alignment = .top
-
+        
         let valuesStackView = UIStackView()
         valuesStackView.translatesAutoresizingMaskIntoConstraints = false
         valuesStackView.axis = .horizontal
         valuesStackView.spacing = 32
         valuesStackView.alignment = .top
-
+        
         titlesStackView.addArrangedSubview(lengthTitleLabel)
         titlesStackView.addArrangedSubview(languageTitleLabel)
         titlesStackView.addArrangedSubview(ratingTitleLabel)
-
+        
         valuesStackView.addArrangedSubview(lengthValueLabel)
         valuesStackView.addArrangedSubview(languageValueLabel)
         valuesStackView.addArrangedSubview(ratingValueLabel)
-
+        
         parametersStackView.addArrangedSubview(titlesStackView)
         parametersStackView.addArrangedSubview(valuesStackView)
-
+        
         containerView.addSubview(parametersStackView)
-
+        
         NSLayoutConstraint.activate([
             parametersStackView.topAnchor.constraint(equalTo: genresCollectionView.bottomAnchor, constant: 16),
             parametersStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 24),
             parametersStackView.widthAnchor.constraint(equalToConstant: 327),
             parametersStackView.heightAnchor.constraint(equalToConstant: 40),
         ])
-
+        
         let titleWidth: CGFloat = 80
         let valueWidth: CGFloat = 80
         
         lengthValueLabel.text = "2h 28min"
         languageValueLabel.text = "English"
         ratingValueLabel.text = "PG-13"
-
-
+        
+        
         lengthTitleLabel.widthAnchor.constraint(equalToConstant: titleWidth).isActive = true
         languageTitleLabel.widthAnchor.constraint(equalToConstant: titleWidth).isActive = true
         ratingTitleLabel.widthAnchor.constraint(equalToConstant: titleWidth).isActive = true
-
+        
         lengthValueLabel.widthAnchor.constraint(equalToConstant: valueWidth).isActive = true
         languageValueLabel.widthAnchor.constraint(equalToConstant: valueWidth).isActive = true
         ratingValueLabel.widthAnchor.constraint(equalToConstant: valueWidth).isActive = true
@@ -358,14 +358,14 @@ final class DetailsPageVC: UIViewController {
         containerView.addSubview(descriptionLabel)
         
         descriptionLabel.text = "A thrilling story about Spider-Man facing new challenges and discovering unexpected alliances."
-
+        
         
         NSLayoutConstraint.activate([
             descriptionLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -150),
             descriptionLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 24),
             descriptionLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -24),
             descriptionLabel.heightAnchor.constraint(equalToConstant: 150),
-
+            
             descriptionTitle.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor, constant: -12),
             descriptionTitle.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 24),
             descriptionTitle.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -24),
@@ -379,7 +379,7 @@ final class DetailsPageVC: UIViewController {
         
         actorsCollectionView.dataSource = self
         actorsCollectionView.delegate = self
-
+        
         NSLayoutConstraint.activate([
             actorsCollectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 24),
             actorsCollectionView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -24),
@@ -396,7 +396,7 @@ extension DetailsPageVC: UICollectionViewDataSource, UICollectionViewDelegateFlo
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return collectionView == genresCollectionView ? genres.count : actors.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == genresCollectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailsPageGenreCell.reuseIdentifier, for: indexPath) as? DetailsPageGenreCell else {
@@ -412,7 +412,7 @@ extension DetailsPageVC: UICollectionViewDataSource, UICollectionViewDelegateFlo
             return cell
         }
     }
-
+    
     // MARK: - UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
