@@ -8,9 +8,6 @@
 import UIKit
 
 final class DetailsPageVC: UIViewController {
-    
-    // MARK: - Properties
-    
     private lazy var backButton = UIButton()
     private lazy var configuration = UIImage.SymbolConfiguration(pointSize: 28)
     private lazy var isBookmarked = false
@@ -18,9 +15,9 @@ final class DetailsPageVC: UIViewController {
     let movieImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .orange
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        
         return imageView
     }()
     
@@ -30,6 +27,7 @@ final class DetailsPageVC: UIViewController {
         view.backgroundColor = .white
         view.layer.cornerRadius = 20
         view.layer.masksToBounds = true
+        
         return view
     }()
     
@@ -40,18 +38,21 @@ final class DetailsPageVC: UIViewController {
         label.numberOfLines = 0
         label.textColor = UIColor(hexString: "000000")
         label.textAlignment = .left
+        
         return label
     }()
     
     private let bookmarkButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
+        
         return button
     }()
     
     private let imdbLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        
         return label
     }()
     
@@ -65,6 +66,7 @@ final class DetailsPageVC: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .clear
+        
         return collectionView
     }()
     
@@ -75,6 +77,7 @@ final class DetailsPageVC: UIViewController {
         label.textColor = UIColor(hexString: "9C9C9C")
         label.text = "Length"
         label.textAlignment = .left
+        
         return label
     }()
     
@@ -85,6 +88,7 @@ final class DetailsPageVC: UIViewController {
         label.textColor = .lightGray
         label.text = "Language"
         label.textAlignment = .left
+        
         return label
     }()
     
@@ -95,6 +99,7 @@ final class DetailsPageVC: UIViewController {
         label.textColor = .lightGray
         label.text = "Rating"
         label.textAlignment = .left
+        
         return label
     }()
     
@@ -104,6 +109,7 @@ final class DetailsPageVC: UIViewController {
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .black
         label.textAlignment = .left
+        
         return label
     }()
     
@@ -113,6 +119,7 @@ final class DetailsPageVC: UIViewController {
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .black
         label.textAlignment = .left
+        
         return label
     }()
     
@@ -122,16 +129,17 @@ final class DetailsPageVC: UIViewController {
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .black
         label.textAlignment = .left
+        
         return label
     }()
     
-    //description
     private let descriptionTitle: UILabel = {
         let label = UILabel()
         label.text = "Description"
         label.font = UIFont.boldSystemFont(ofSize: 18)
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
+        
         return label
     }()
     
@@ -139,15 +147,13 @@ final class DetailsPageVC: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 15)
-        label.backgroundColor = .purple
         label.textColor = .black
         label.numberOfLines = 0
         label.textAlignment = .left
+        
         return label
     }()
     
-    
-    //ჩამატება ლეთების
     private let actorsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -159,11 +165,11 @@ final class DetailsPageVC: UIViewController {
         return collectionView
     }()
     
-    // ეს მაგალითები
-    private let actors = [("Tom Holland", "actorImage1"), ("Zendaya", "actorImage2"), ("Benedict Cumberbatch", "actorImage3"), ("Tom Holland", "actorImage1"), ("Tom Holland", "actorImage1")]
+    var film: FilmModel?
     
+    var reloadData: (() -> Void)?
     
-    // MARK: - Lifecycle
+    private let homePageViewModel = HomePageViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -178,10 +184,33 @@ final class DetailsPageVC: UIViewController {
         setupParameters()
         setupDescription()
         setupActorsCollectionView()
+        setupDetails()
     }
     
-    // MARK: - Setup Methods
-    
+    private func setupDetails() {
+        titleLabel.text = film?.name
+        languageValueLabel.text = film?.language
+        lengthValueLabel.text = film?.length
+        ratingValueLabel.text = film?.rating
+        languageValueLabel.text = film?.language
+        
+        let starImage = UIImage(systemName: "star.fill")
+        let attachment = NSTextAttachment(image: starImage!.withRenderingMode(.alwaysOriginal))
+        let attachmentString = NSAttributedString(attachment: attachment)
+        
+        let ratingText = "\(film?.imdbRating ?? 0)/10 IMDb"
+        let ratingAttributedString = NSAttributedString(string: ratingText, attributes: [
+            .font: UIFont.systemFont(ofSize: 15),
+            .foregroundColor: UIColor.gray
+        ])
+        
+        let combinedAttributedString = NSMutableAttributedString()
+        combinedAttributedString.append(attachmentString)
+        combinedAttributedString.append(ratingAttributedString)
+        
+        imdbLabel.attributedText = combinedAttributedString
+        
+    }
     private func setupBackButton() {
         backButton.setImage(UIImage(systemName: "arrow.backward", withConfiguration: configuration), for: .normal)
         backButton.tintColor = .white
@@ -196,6 +225,8 @@ final class DetailsPageVC: UIViewController {
     
     private func setupMovieImageView() {
         view.addSubview(movieImageView)
+        
+        movieImageView.image = film?.image
         
         NSLayoutConstraint.activate([
             movieImageView.heightAnchor.constraint(equalToConstant: 300),
@@ -218,8 +249,6 @@ final class DetailsPageVC: UIViewController {
     
     private func setupTitleLabel() {
         containerView.addSubview(titleLabel)
-        
-        titleLabel.text = "Spiderman: No Way Home"
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 24),
@@ -250,29 +279,20 @@ final class DetailsPageVC: UIViewController {
         
         if isBookmarked {
             bookmarkButton.setImage(UIImage(systemName: "bookmark.fill", withConfiguration: configuration), for: .normal)
+            if let film = film {
+                homePageViewModel.addToFavorites(film: film)
+            }
         } else {
             bookmarkButton.setImage(UIImage(systemName: "bookmark", withConfiguration: configuration), for: .normal)
+            if let film = film {
+                homePageViewModel.addToFavorites(film: film)
+            }
         }
+        reloadData?()
     }
     
     private func setupIMDbLabel() {
         containerView.addSubview(imdbLabel)
-        
-        let starImage = UIImage(systemName: "star.fill")
-        let attachment = NSTextAttachment(image: starImage!.withRenderingMode(.alwaysOriginal))
-        let attachmentString = NSAttributedString(attachment: attachment)
-        
-        let ratingText = " 9.1/10 IMDb"
-        let ratingAttributedString = NSAttributedString(string: ratingText, attributes: [
-            .font: UIFont.systemFont(ofSize: 15),
-            .foregroundColor: UIColor.gray
-        ])
-        
-        let combinedAttributedString = NSMutableAttributedString()
-        combinedAttributedString.append(attachmentString)
-        combinedAttributedString.append(ratingAttributedString)
-        
-        imdbLabel.attributedText = combinedAttributedString
         
         NSLayoutConstraint.activate([
             imdbLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
@@ -338,11 +358,6 @@ final class DetailsPageVC: UIViewController {
         let titleWidth: CGFloat = 80
         let valueWidth: CGFloat = 80
         
-        lengthValueLabel.text = "2h 28min"
-        languageValueLabel.text = "English"
-        ratingValueLabel.text = "PG-13"
-        
-        
         lengthTitleLabel.widthAnchor.constraint(equalToConstant: titleWidth).isActive = true
         languageTitleLabel.widthAnchor.constraint(equalToConstant: titleWidth).isActive = true
         ratingTitleLabel.widthAnchor.constraint(equalToConstant: titleWidth).isActive = true
@@ -352,12 +367,11 @@ final class DetailsPageVC: UIViewController {
         ratingValueLabel.widthAnchor.constraint(equalToConstant: valueWidth).isActive = true
     }
     
-    //description setup
     private func setupDescription() {
         containerView.addSubview(descriptionTitle)
         containerView.addSubview(descriptionLabel)
         
-        descriptionLabel.text = "A thrilling story about Spider-Man facing new challenges and discovering unexpected alliances."
+        descriptionLabel.text = film?.description
         
         
         NSLayoutConstraint.activate([
@@ -372,7 +386,6 @@ final class DetailsPageVC: UIViewController {
         ])
     }
     
-    // ეს არის სეტაპი
     private func setupActorsCollectionView() {
         containerView.addSubview(actorsCollectionView)
         actorsCollectionView.register(ActorCell.self, forCellWithReuseIdentifier: ActorCell.reuseIdentifier)
@@ -389,12 +402,14 @@ final class DetailsPageVC: UIViewController {
     }
 }
 
-// MARK: - UICollectionViewDataSource
-
 extension DetailsPageVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return collectionView == genresCollectionView ? genres.count : actors.count
+        if collectionView == genresCollectionView {
+                return film?.genre.count ?? 0
+            } else {
+                return film?.cast.count ?? 0
+            }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -402,19 +417,22 @@ extension DetailsPageVC: UICollectionViewDataSource, UICollectionViewDelegateFlo
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailsPageGenreCell.reuseIdentifier, for: indexPath) as? DetailsPageGenreCell else {
                 return UICollectionViewCell()
             }
-            cell.configure(with: genres[indexPath.item])
+            film?.genre.forEach {
+                cell.configure(with: $0)
+            }
             return cell
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ActorCell.reuseIdentifier, for: indexPath) as? ActorCell else {
                 return UICollectionViewCell()
             }
-            cell.configure(with: actors[indexPath.item])
+            
+            film?.cast.forEach {
+                cell.configure(with: $0)
+            }
             return cell
         }
     }
-    
-    // MARK: - UICollectionViewDelegate
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == genresCollectionView {
             let genre = genres[indexPath.item]

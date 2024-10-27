@@ -142,7 +142,7 @@ final class HomePageViewModel {
     ]
     
     func getNowShowingMovies() -> [FilmModel] {
-       return Array(movies.prefix(5))
+        return Array(movies.prefix(5))
     }
     
     func getPopularMovies() -> [FilmModel] {
@@ -150,17 +150,32 @@ final class HomePageViewModel {
     }
     
     func getFavoriteMovies() -> [FilmModel] {
-        movies[0].isFavorite = true
         movies[2].isFavorite = true
         movies[4].isFavorite = true
-        return movies.filter { $0.isFavorite == true }
+        return movies.filter { $0.isFavorite }
     }
     
     var numberOfFilmModels: Int {
         movies.count
     }
     
-    func getFilmModel(at index: Int) -> FilmModel {
-        movies[index]
+    func getNowShowingFilm(at index: Int) -> FilmModel {
+        let array = Array(movies.prefix(5))
+        let current = array[index]
+        
+        return current
+    }
+    
+    func getPopularFilm(at index: Int) -> FilmModel {
+        let array = Array(movies.suffix(5))
+        let current = array[index]
+        
+        return current
+    }
+    
+    func addToFavorites(film: FilmModel) {
+        if let index = movies.firstIndex(where: { $0.name == film.name }) {
+            movies[index].isFavorite.toggle()
+        }
     }
 }

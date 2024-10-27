@@ -8,9 +8,6 @@
 import UIKit
 
 class DetailsPageGenreCell: UICollectionViewCell {
-    
-    // MARK: - Properties
-    
     static let reuseIdentifier = "GenreCell"
     
     private let genreLabel: UILabel = {
@@ -22,10 +19,9 @@ class DetailsPageGenreCell: UICollectionViewCell {
         label.layer.cornerRadius = 16
         label.layer.masksToBounds = true
         label.backgroundColor = UIColor(hexString: "DBE3FF")
+        
         return label
     }()
-    
-    // MARK: - Initializers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -42,11 +38,9 @@ class DetailsPageGenreCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - Configuration
-    
-    func configure(with genre: String) {
-        genreLabel.text = genre
+
+    func configure(with genre: Genre) {
+        genreLabel.text = genre.description
     }
 }
 

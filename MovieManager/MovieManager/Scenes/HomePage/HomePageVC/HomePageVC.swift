@@ -18,8 +18,6 @@ final class HomePageVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-
-
         setupUI()
     }
     
@@ -84,7 +82,8 @@ extension HomePageVC: UITableViewDataSource, UITableViewDelegate {
             return
         } else if indexPath.section == 1 {
             let vc = DetailsPageVC()
-            
+            vc.hidesBottomBarWhenPushed = true
+            vc.film = homePageViewModel.getPopularFilm(at: currentIndex)
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -96,8 +95,12 @@ extension HomePageVC: UITableViewDataSource, UITableViewDelegate {
 
 extension HomePageVC: HorisontalCellDelegate {
     func horisontalCellDidSelectItem(at indexPath: IndexPath) {
-        let detailViewController = DetailsPageVC()
-        navigationController?.pushViewController(detailViewController, animated: true)
+        let currentIndex = indexPath.row
+        
+        let vc = DetailsPageVC()
+        vc.hidesBottomBarWhenPushed = true
+        vc.film = homePageViewModel.getNowShowingFilm(at: currentIndex)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

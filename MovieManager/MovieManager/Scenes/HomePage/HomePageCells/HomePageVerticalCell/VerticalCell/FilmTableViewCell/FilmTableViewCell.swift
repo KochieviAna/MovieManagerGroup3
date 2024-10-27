@@ -8,9 +8,6 @@
 import UIKit
 
 class FilmTableViewCell: UITableViewCell {
-    
-    // MARK: - UI Elements
-    
     static let identifier = "TableViewCell"
     
     private lazy var filmImageView: UIImageView = {
@@ -79,6 +76,7 @@ class FilmTableViewCell: UITableViewCell {
     private lazy var durationImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "Duration")
+        
         return imageView
     }()
     
@@ -122,9 +120,7 @@ class FilmTableViewCell: UITableViewCell {
     }
     
     private let homePageViewModel = HomePageViewModel()
-    
-    // MARK: - Functions
-    
+
     private func setup() {
         contentView.addSubview(filmImageView)
         contentView.addSubview(detailsWrapper)
@@ -173,8 +169,6 @@ class FilmTableViewCell: UITableViewCell {
     }
 }
 
-// MARK: - Extensions
-
 extension FilmTableViewCell: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -191,9 +185,6 @@ extension FilmTableViewCell: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 }
-
-
-// MARK: - Collection View Delegate and Data Source
 
 extension FilmTableViewCell: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     

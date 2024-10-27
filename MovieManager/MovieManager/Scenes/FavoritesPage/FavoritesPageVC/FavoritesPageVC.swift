@@ -21,7 +21,7 @@ final class FavoritesPageVC: UIViewController {
     }()
     
     let homePageViewModel = HomePageViewModel()
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -53,10 +53,24 @@ extension FavoritesPageVC: UICollectionViewDelegate, UICollectionViewDataSource 
             fatalError("Failed to dequeue CustomCollectionViewCell")
         }
         let currentFilm = homePageViewModel.getFavoriteMovies()[indexPath.row]
-
+        
         cell.configure(with: currentFilm)
-                       
+        
         return cell
-            
-        }
+        
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let currentFilm = homePageViewModel.getFavoriteMovies()[indexPath.row]
+        
+        let vc = DetailsPageVC()
+        
+        vc.hidesBottomBarWhenPushed = true
+        vc.film = currentFilm
+        vc.reloadData = { [weak self] in
+            self?.moviesCollectionView.reloadData()
+        }
+        
+        navigationController?.pushViewController(vc, animated: true)
+    }
+}

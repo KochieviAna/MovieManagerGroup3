@@ -25,6 +25,7 @@ final class HorisontalCell: UITableViewCell {
         collectionView.backgroundColor = .clear
         collectionView.dataSource = self
         collectionView.delegate = self
+        
         return collectionView
     }()
     
@@ -84,7 +85,6 @@ extension HorisontalCell: UICollectionViewDataSource, UICollectionViewDelegate {
 extension HorisontalCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let collectionViewWidth = collectionView.bounds.width
-        
         let totalSpacing: CGFloat = 32
         let cellWidth = (collectionViewWidth - totalSpacing) / 2
         let cellHeight: CGFloat = 283

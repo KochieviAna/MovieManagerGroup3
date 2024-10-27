@@ -14,8 +14,8 @@ final class ActorCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.backgroundColor = .orange
         imageView.layer.cornerRadius = 20
+        
         return imageView
     }()
     
@@ -26,6 +26,7 @@ final class ActorCell: UICollectionViewCell {
         label.textAlignment = .center
         label.textColor = .black
         label.numberOfLines = 0
+        
         return label
     }()
     
@@ -50,9 +51,9 @@ final class ActorCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with actor: (name: String, imageName: String)) {
+    func configure(with actor: ActorModel) {
         actorNameLabel.text = actor.name
-        actorImageView.image = UIImage(named: actor.imageName)
+        actorImageView.image = actor.image
     }
 }
 
