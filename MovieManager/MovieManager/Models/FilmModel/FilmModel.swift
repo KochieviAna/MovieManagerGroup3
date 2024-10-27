@@ -22,13 +22,12 @@ enum Genre: String {
 struct FilmModel {
     let image: UIImage
     let name: String
-    let backgroundImage: UIImage
     let description: String
     let genre: [Genre]
-    let isFavorite: Bool = false
+    var isFavorite: Bool = false
     let imdbRating: Double
     let length: String
     let language: String
     let rating: String
-    let cast: [Actor]
+    let cast: [ActorModel]
 }
