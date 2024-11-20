@@ -12,9 +12,7 @@ final class HomePageVC: UIViewController {
         tableView.separatorStyle = .none
         return tableView
     }()
-    
-    let homePageViewModel = HomePageViewModel()
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -46,7 +44,7 @@ extension HomePageVC: UITableViewDataSource, UITableViewDelegate {
         if section == 0 {
             return 1
         } else {
-            return homePageViewModel.getPopularMovies().count
+            return MovieManager.shared.getPopularMovies().count
         }
     }
     
@@ -68,7 +66,7 @@ extension HomePageVC: UITableViewDataSource, UITableViewDelegate {
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: FilmTableViewCell.identifier, for: indexPath) as? FilmTableViewCell else { return UITableViewCell() }
             
-            let movie = homePageViewModel.getPopularMovies()[indexPath.row]
+            let movie = MovieManager.shared.getPopularMovies()[indexPath.row]
             cell.configure(with: movie)
 
             return cell
@@ -83,7 +81,7 @@ extension HomePageVC: UITableViewDataSource, UITableViewDelegate {
         } else if indexPath.section == 1 {
             let vc = DetailsPageVC()
             vc.hidesBottomBarWhenPushed = true
-            vc.film = homePageViewModel.getPopularFilm(at: currentIndex)
+            vc.film = MovieManager.shared.getPopularFilm(at: currentIndex)
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -99,7 +97,7 @@ extension HomePageVC: HorisontalCellDelegate {
         
         let vc = DetailsPageVC()
         vc.hidesBottomBarWhenPushed = true
-        vc.film = homePageViewModel.getNowShowingFilm(at: currentIndex)
+        vc.film = MovieManager.shared.getNowShowingFilm(at: currentIndex)
         navigationController?.pushViewController(vc, animated: true)
     }
 }

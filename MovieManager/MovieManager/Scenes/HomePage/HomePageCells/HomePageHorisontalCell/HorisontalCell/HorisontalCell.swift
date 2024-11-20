@@ -28,9 +28,7 @@ final class HorisontalCell: UITableViewCell {
         
         return collectionView
     }()
-    
-    private let homePageViewModel = HomePageViewModel()
-    
+        
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpUI()
@@ -62,14 +60,14 @@ final class HorisontalCell: UITableViewCell {
 
 extension HorisontalCell: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        homePageViewModel.getNowShowingMovies().count
+        MovieManager.shared.getNowShowingMovies().count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FilmCollectionViewCell", for: indexPath) as? FilmCollectionViewCell else {
             return UICollectionViewCell()
         }
-        let currentFilm = homePageViewModel.getNowShowingMovies()[indexPath.row]
+        let currentFilm = MovieManager.shared.getNowShowingMovies()[indexPath.row]
         
         cell.configureHorisontalCell(film: currentFilm)
         

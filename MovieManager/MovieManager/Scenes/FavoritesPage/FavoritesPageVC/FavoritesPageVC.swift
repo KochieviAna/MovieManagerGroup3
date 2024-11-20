@@ -19,9 +19,7 @@ final class FavoritesPageVC: UIViewController {
         
         return collection
     }()
-    
-    let homePageViewModel = HomePageViewModel()
-        
+            
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -41,18 +39,23 @@ final class FavoritesPageVC: UIViewController {
         
         moviesCollectionView.register(FavoritesPageCell.self, forCellWithReuseIdentifier: FavoritesPageCell.identifier)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        moviesCollectionView.reloadData()
+    }
 }
 
 extension FavoritesPageVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        homePageViewModel.getFavoriteMovies().count
+        MovieManager.shared.getFavorites().count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoritesPageCell.identifier, for: indexPath) as? FavoritesPageCell else {
-            fatalError("Failed to dequeue CustomCollectionViewCell")
+           return  UICollectionViewCell()
         }
-        let currentFilm = homePageViewModel.getFavoriteMovies()[indexPath.row]
+        let currentFilm = MovieManager.shared.getFavorites(at: indexPath.row )
         
         cell.configure(with: currentFilm)
         
@@ -61,7 +64,7 @@ extension FavoritesPageVC: UICollectionViewDelegate, UICollectionViewDataSource 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let currentFilm = homePageViewModel.getFavoriteMovies()[indexPath.row]
+        let currentFilm = MovieManager.shared.getFavorites(at: indexPath.row )
         
         let vc = DetailsPageVC()
         
