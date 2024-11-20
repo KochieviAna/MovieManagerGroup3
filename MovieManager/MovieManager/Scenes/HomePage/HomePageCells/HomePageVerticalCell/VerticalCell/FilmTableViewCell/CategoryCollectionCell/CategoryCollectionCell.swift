@@ -23,6 +23,7 @@ class CategoryCollectionCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.selectedBackgroundView = .none
         setup()
     }
     

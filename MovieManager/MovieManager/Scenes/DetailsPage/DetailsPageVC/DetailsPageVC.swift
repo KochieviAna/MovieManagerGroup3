@@ -10,7 +10,7 @@ import UIKit
 final class DetailsPageVC: UIViewController {
     private lazy var backButton = UIButton()
     private lazy var configuration = UIImage.SymbolConfiguration(pointSize: 28)
-    private lazy var isBookmarked = false
+    private lazy var isBookmarked = film?.isFavorite
     
     let movieImageView: UIImageView = {
         let imageView = UIImageView()
@@ -168,9 +168,7 @@ final class DetailsPageVC: UIViewController {
     var film: FilmModel?
     
     var reloadData: (() -> Void)?
-    
-    private let homePageViewModel = HomePageViewModel()
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .cyan
@@ -260,8 +258,8 @@ final class DetailsPageVC: UIViewController {
     
     private func setupSmallButton() {
         containerView.addSubview(bookmarkButton)
-        
-        bookmarkButton.setImage(UIImage(systemName: "bookmark", withConfiguration: configuration), for: .normal)
+         
+        bookmarkButton.setImage(UIImage(systemName: isBookmarked! ? "bookmark.fill" : "bookmark", withConfiguration: configuration), for: .normal)
         bookmarkButton.tintColor = .black
         
         bookmarkButton.addAction(UIAction(handler: { [weak self] action in self?.toggleBookmark()}), for: .touchUpInside)
@@ -275,17 +273,17 @@ final class DetailsPageVC: UIViewController {
     }
     
     private func toggleBookmark() {
-        isBookmarked.toggle()
+        isBookmarked?.toggle()
         
-        if isBookmarked {
+        if isBookmarked! {
             bookmarkButton.setImage(UIImage(systemName: "bookmark.fill", withConfiguration: configuration), for: .normal)
             if let film = film {
-                homePageViewModel.addToFavorites(film: film)
+                MovieManager.shared.addToFavorites(film: film)
             }
         } else {
             bookmarkButton.setImage(UIImage(systemName: "bookmark", withConfiguration: configuration), for: .normal)
             if let film = film {
-                homePageViewModel.addToFavorites(film: film)
+                MovieManager.shared.addToFavorites(film: film)
             }
         }
         reloadData?()
@@ -411,28 +409,26 @@ extension DetailsPageVC: UICollectionViewDataSource, UICollectionViewDelegateFlo
                 return film?.cast.count ?? 0
             }
     }
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == genresCollectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailsPageGenreCell.reuseIdentifier, for: indexPath) as? DetailsPageGenreCell else {
                 return UICollectionViewCell()
             }
-            film?.genre.forEach {
-                cell.configure(with: $0)
+            if let genre = film?.genre[indexPath.item] {
+                cell.configure(with: genre)
             }
             return cell
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ActorCell.reuseIdentifier, for: indexPath) as? ActorCell else {
                 return UICollectionViewCell()
             }
-            
-            film?.cast.forEach {
-                cell.configure(with: $0)
+            if let castMember = film?.cast[indexPath.item] {
+                cell.configure(with: castMember)
             }
             return cell
         }
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == genresCollectionView {
             let genre = genres[indexPath.item]

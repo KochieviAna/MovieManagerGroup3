@@ -111,6 +111,7 @@ class FilmTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.selectionStyle = .none
         setup()
         setupConstraints()
     }
@@ -119,8 +120,6 @@ class FilmTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let homePageViewModel = HomePageViewModel()
-
     private func setup() {
         contentView.addSubview(filmImageView)
         contentView.addSubview(detailsWrapper)
@@ -172,14 +171,14 @@ class FilmTableViewCell: UITableViewCell {
 extension FilmTableViewCell: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return homePageViewModel.getPopularMovies().count
+        return MovieManager.shared.getPopularMovies().count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: FilmTableViewCell.identifier, for: indexPath) as? FilmTableViewCell else {
             return UITableViewCell()
         }
-        let currentFilm = homePageViewModel.getPopularMovies()[indexPath.row]
+        let currentFilm = MovieManager.shared.getPopularMovies()[indexPath.row]
         
         cell.configure(with: currentFilm)
         return cell
@@ -195,7 +194,7 @@ extension FilmTableViewCell: UICollectionViewDataSource, UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionCell.identifier, for: indexPath) as! CategoryCollectionCell
         
-        let currentFilm = homePageViewModel.getPopularMovies()[indexPath.row]
+        let currentFilm = MovieManager.shared.getPopularMovies()[indexPath.row]
         
         currentFilm.genre.forEach {
             cell.setCategory(with: $0.description)

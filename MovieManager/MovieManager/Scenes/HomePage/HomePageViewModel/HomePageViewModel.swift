@@ -7,8 +7,7 @@
 
 import UIKit
 
-final class HomePageViewModel {
-    
+final class MovieManager {
     static let leo = ActorModel(image: UIImage(named: "Leonardo") ?? UIImage(), name: "Leonardo DiCaprio")
     static let joseph = ActorModel(image: UIImage(named: "Joseph") ?? UIImage(), name: "Joseph Gordon-Levitt")
     static let elliot = ActorModel(image: UIImage(named: "Elliot") ?? UIImage(), name: "Elliot Page")
@@ -28,7 +27,11 @@ final class HomePageViewModel {
     static let chirstian = ActorModel(image: UIImage(named: "Christian") ?? UIImage(), name: "Christian Bale")
     static let heath = ActorModel(image: UIImage(named: "Heath") ?? UIImage(), name: "Heath Ledger")
     
-    private var movies: [FilmModel] = [
+    static let shared = MovieManager()
+    
+    private init() {}
+    
+    var movies: [FilmModel] = [
         FilmModel(
             image: UIImage(named: "Inception") ?? UIImage(),
             name: "Inception",
@@ -140,19 +143,13 @@ final class HomePageViewModel {
             cast: [chirstian, heath]
         )
     ]
-    
+
     func getNowShowingMovies() -> [FilmModel] {
         return Array(movies.prefix(5))
     }
     
     func getPopularMovies() -> [FilmModel] {
         return Array(movies.suffix(5))
-    }
-    
-    func getFavoriteMovies() -> [FilmModel] {
-        movies[2].isFavorite = true
-        movies[4].isFavorite = true
-        return movies.filter { $0.isFavorite }
     }
     
     var numberOfFilmModels: Int {
@@ -177,5 +174,13 @@ final class HomePageViewModel {
         if let index = movies.firstIndex(where: { $0.name == film.name }) {
             movies[index].isFavorite.toggle()
         }
+    }
+    
+    func getFavorites() -> [FilmModel] {
+        return movies.filter { $0.isFavorite }
+    }
+    
+    func getFavorites(at index: Int) -> FilmModel {
+        movies.filter { $0.isFavorite }[index]
     }
 }
